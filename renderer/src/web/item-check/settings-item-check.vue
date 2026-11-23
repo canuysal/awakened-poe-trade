@@ -37,6 +37,10 @@ const hotkeys = computed(() => {
       translationKey: 'item.open_on_craftofexile',
       config: _configModelValue(widget, 'craftOfExileKey')
     })
+    out.push({
+      translationKey: 'item.open_on_pobarchives',
+      config: _configModelValue(widget, 'pobArchivesKey')
+    })
   }
   out.push({
     translationKey: 'item.find_in_stash',

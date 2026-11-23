@@ -11,7 +11,7 @@ const POEDB_LANGS: Record<Config['language'], string> = {
 
 export function registerActions () {
   Host.onEvent('MAIN->CLIENT::item-text', (e) => {
-    if (!['open-wiki', 'open-craft-of-exile', 'open-poedb', 'search-similar'].includes(e.target)) return
+    if (!['open-wiki', 'open-craft-of-exile', 'open-pobarchives', 'open-poedb', 'search-similar'].includes(e.target)) return
     const parsed = parseClipboard(e.clipboard)
     if (!parsed.isOk()) return
 
@@ -19,6 +19,8 @@ export function registerActions () {
       openWiki(parsed.value)
     } else if (e.target === 'open-craft-of-exile') {
       openCoE(parsed.value)
+    } else if (e.target === 'open-pobarchives') {
+      openPobArchives(parsed.value)
     } else if (e.target === 'open-poedb') {
       openPoedb(parsed.value)
     } else if (e.target === 'search-similar') {
@@ -37,6 +39,25 @@ export function openPoedb (item: ParsedItem) {
 export function openCoE (item: ParsedItem) {
   const encodedClipboard = encodeURIComponent(item.rawText)
   window.open(`https://craftofexile.com/?game=poe1&eimport=${encodedClipboard}`)
+}
+
+// PoB Archives crafting planner: ?item= takes the base64url of the item's copied text.
+// This app only reads Path of Exile 1 items; a PoE2 build would send to /craft/poe2.
+const POBARCHIVES_CRAFT = 'https://pobarchives.com/craft/poe'
+const POBARCHIVES_PLAYGROUND = 'https://pobarchives.com/playground/poe'
+
+export function openPobArchives (item: ParsedItem) {
+  window.open(`${POBARCHIVES_CRAFT}?item=${encodeItemText(item)}`)
+}
+export function openPobArchivesPlayground (item: ParsedItem) {
+  window.open(`${POBARCHIVES_PLAYGROUND}?item=${encodeItemText(item)}`)
+}
+
+function encodeItemText (item: ParsedItem): string {
+  const bytes = new TextEncoder().encode(item.rawText)
+  let binary = ''
+  for (const b of bytes) binary += String.fromCharCode(b)
+  return btoa(binary).replaceAll('+', '-').replaceAll('/', '_').replace(/=+$/, '')
 }
 
 export function findSimilarItems (item: ParsedItem) {

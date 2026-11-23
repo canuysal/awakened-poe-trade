@@ -29,6 +29,7 @@ export default {
         wikiKey: null,
         poedbKey: null,
         craftOfExileKey: null,
+        pobArchivesKey: null,
         stashSearchKey: null,
         maps: {
           profile: 1,

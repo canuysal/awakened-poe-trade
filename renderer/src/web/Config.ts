@@ -123,7 +123,7 @@ export interface Config {
 }
 
 export const defaultConfig = (): Config => ({
-  configVersion: 18,
+  configVersion: 19,
   overlayKey: 'Shift + Space',
   overlayBackground: 'rgba(129, 139, 149, 0.15)',
   overlayBackgroundClose: true,
@@ -435,6 +435,13 @@ function upgradeConfig (_config: Config): Config {
 
     config.configVersion = 18
   }
+
+  if (config.configVersion < 19) {
+    const itemCheck = config.widgets.find(w => w.wmType === 'item-check') as ItemCheckWidget
+    itemCheck.pobArchivesKey = null
+
+    config.configVersion = 19
+  }
   /* eslint-enable */
 
   return config as unknown as Config
@@ -474,6 +481,12 @@ function getConfigForHost (): HostConfig {
     actions.push({
       shortcut: itemCheck.craftOfExileKey,
       action: { type: 'copy-item', target: 'open-craft-of-exile' }
+    })
+  }
+  if (itemCheck.pobArchivesKey) {
+    actions.push({
+      shortcut: itemCheck.pobArchivesKey,
+      action: { type: 'copy-item', target: 'open-pobarchives' }
     })
   }
   if (itemCheck.poedbKey) {

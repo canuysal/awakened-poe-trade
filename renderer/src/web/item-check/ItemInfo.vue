@@ -5,6 +5,8 @@
       <button class="btn flex-1" @click="openWiki">wiki</button>
       <button class="btn flex-1" @click="openPoedb">poedb</button>
       <button v-if="showCoE" class="btn flex-1" @click="openCoE">CoE</button>
+      <button v-if="showCoE" class="btn flex-1 whitespace-nowrap" @click="openPobArchives">PoBA - Craft</button>
+      <button v-if="showCoE" class="btn flex-1 whitespace-nowrap" @click="openPobArchivesPlayground">PoBA - Playground</button>
       <i class="fa-solid fa-ellipsis-vertical text-gray-600"></i>
       <button class="btn flex-1 whitespace-nowrap" @click="stashSearch">{{ t('item.find_in_stash') }}</button>
     </div>
@@ -43,6 +45,8 @@ function stashSearch () { actions.findSimilarItems(props.item) }
 function openWiki () { actions.openWiki(props.item) }
 function openPoedb () { actions.openPoedb(props.item) }
 function openCoE () { actions.openCoE(props.item) }
+function openPobArchives () { actions.openPobArchives(props.item) }
+function openPobArchivesPlayground () { actions.openPobArchivesPlayground(props.item) }
 
 const showCoE = computed(() => {
   const { item } = props
@@ -79,6 +83,7 @@ const itemName = computed(() => props.item.info.name)
 .actionBtns {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: theme('spacing.1');
   padding: theme('spacing.1') 0;
 }
